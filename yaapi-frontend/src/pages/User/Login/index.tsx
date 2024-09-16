@@ -5,10 +5,10 @@ import {
 } from '@ant-design/icons';
 import {
   LoginForm,
-  ProFormCheckbox, ProFormInstance,
+  ProFormInstance,
   ProFormText,
 } from '@ant-design/pro-components';
-import {Alert, message, Tabs} from 'antd';
+import {message, Tabs} from 'antd';
 import { createStyles } from 'antd-style';
 import React, {useRef, useState} from 'react';
 import {useModel} from '@umijs/max';
@@ -49,20 +49,6 @@ const useStyles = createStyles(({ token }): any => {
     },
   };
 });
-const LoginMessage: React.FC<{
-  content: string;
-}> = ({ content }) => {
-  return (
-    <Alert
-      style={{
-        marginBottom: 24,
-      }}
-      message={content}
-      type="error"
-      showIcon
-    />
-  );
-};
 const Login: React.FC = () => {
   const [loginType, setLoginType] = useState<LoginType>('account');
   const {setInitialState } = useModel('@@initialState');
@@ -133,9 +119,6 @@ const Login: React.FC = () => {
           logo={<img alt="logo" src="/logo.svg" />}
           title="Ya API"
           subTitle={'API 开放平台'}
-          initialValues={{
-            autoLogin: true,
-          }}
           onFinish={async (values) => {
             await handleSubmit(values as API.UserLoginRequest);
           }}
@@ -148,9 +131,6 @@ const Login: React.FC = () => {
             <Tabs.TabPane key={'account'} tab={'登录'}/>
             <Tabs.TabPane key={'register'} tab={'注册'}/>
           </Tabs>
-          {status === 'error' && loginType === 'account' && (
-            <LoginMessage content={'错误的账号和密码'} />
-          )}
           {loginType === 'account' && (
             <>
               <ProFormText
@@ -181,23 +161,6 @@ const Login: React.FC = () => {
                   },
                 ]}
               />
-              <div
-                style={{
-                  marginBottom: 24,
-                }}
-              >
-                <ProFormCheckbox noStyle name="autoLogin">
-                  自动登录
-                </ProFormCheckbox>
-                <a
-                  style={{
-                    float: 'right',
-                  }}
-                  onClick={() => setLoginType("forgetPassword")}
-                >
-                  忘记密码 ?
-                </a>
-              </div>
             </>
           )}
 
